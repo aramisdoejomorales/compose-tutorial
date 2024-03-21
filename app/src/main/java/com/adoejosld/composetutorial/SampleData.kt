@@ -7,11 +7,11 @@ object SampleData {
     // Sample conversation data
     val conversationSample = listOf(
         Mensaje(
-            "Lexi",
+            "Aramis Doejo",
             "Test...Test...Test..."
         ),
         Mensaje(
-            "Lexi",
+            "Aramis Doejo",
             """List of Android versions:
             |Android KitKat (API 19)
             |Android Lollipop (API 21)
@@ -24,16 +24,16 @@ object SampleData {
             |Android 12 (API 31)""".trim()
         ),
         Mensaje(
-            "Lexi",
+            "Aramis Doejo",
             """I think Kotlin is my favorite programming language.
             |It's so much fun!""".trim()
         ),
         Mensaje(
-            "Lexi",
+            "Aramis Doejo",
             "Searching for alternatives to XML layouts..."
         ),
         Mensaje(
-            "Lexi",
+            "Aramis Doejo",
             """Hey, take a look at Jetpack Compose, it's great!
             |It's the Android's modern toolkit for building native UI.
             |It simplifies and accelerates UI development on Android.

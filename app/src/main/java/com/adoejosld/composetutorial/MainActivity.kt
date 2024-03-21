@@ -75,8 +75,7 @@ fun MsgCard(msg: Mensaje) {
         var isExpanded by remember { mutableStateOf(false) }
 
         val surfaceColor by animateColorAsState(
-            targetValue =
-            if (isExpanded) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
+            targetValue = if (isExpanded) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
             label = ""
         )
 
