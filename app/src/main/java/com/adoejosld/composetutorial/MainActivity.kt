@@ -4,8 +4,11 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +23,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -32,7 +39,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeTutorialTheme {
-                // A surface container using the 'background' color from the theme
                 Surface {
                     MainScreen()
                 }
@@ -40,8 +46,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
 
 @Composable
 fun MainScreen() {
@@ -51,7 +55,7 @@ fun MainScreen() {
 @Composable
 fun Conversation(mensaje: List<Mensaje>) {
     LazyColumn {
-        items(mensaje) {mensaje -> MsgCard(mensaje)}
+        items(mensaje) { mensaje -> MsgCard(mensaje) }
     }
 }
 
@@ -67,7 +71,16 @@ fun MsgCard(msg: Mensaje) {
                 .border(1.5.dp, MaterialTheme.colorScheme.primary)
         )
         Spacer(modifier = Modifier.width(10.dp))
-        Column {
+
+        var isExpanded by remember { mutableStateOf(false) }
+
+        val surfaceColor by animateColorAsState(
+            targetValue =
+            if (isExpanded) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
+            label = ""
+        )
+
+        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
             Spacer(modifier = Modifier.height(3.dp))
             Text(
                 text = msg.autor,
@@ -75,26 +88,32 @@ fun MsgCard(msg: Mensaje) {
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(3.dp))
-            Text(
-                text = msg.descripcion,
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                shadowElevation = 1.dp,
+                color = surfaceColor,
+                modifier = Modifier
+                    .animateContentSize()
+                    .padding(1.dp)
+            ) {
+                Text(
+                    text = msg.descripcion,
+                    modifier = Modifier.padding(all = 4.dp),
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
     }
 }
 
 @Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-    name = "Dark Mode"
+    uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true, name = "Dark Mode"
 )
 @Preview(name = "Light Mode")
 @Composable
 fun PreviewMainScreen() {
-    Surface {
-        MainScreen()
-    }
+    MainScreen()
 }
 
 
